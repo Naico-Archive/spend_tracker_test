@@ -162,7 +162,7 @@ function show_top_vendors_by_turnover(year) {
                     if(con_count >= 50) continue;
                     results_div_con += "<li data-theme='c'><a href='javascript:show_top_invoices_by_vendor_year("+results[i]['vendor_id']+", "+year+")' id='"+results[i]['vendor_id']+"'> <span class='list_text'>"+toTitleCase(results[i]['NAME'])+"</span>";
                     // results_div += "<span class='chevron my-chevron'></span>";
-                    results_div_con += "<span class='my-count'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
+                    results_div_con += "<span class='my-count' style='float:right'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
                     con_count++;
                 }
                 else if(results[i]['APPROVAL_STATUS'] == "APPROVED"){
@@ -170,7 +170,7 @@ function show_top_vendors_by_turnover(year) {
                     if(app_count >= 50) continue;
                     results_div_app += "<li data-theme='c'><a href='javascript:show_top_invoices_by_vendor_year("+results[i]['vendor_id']+", "+year+")' id='"+results[i]['vendor_id']+"'> <span class='list_text'>"+toTitleCase(results[i]['NAME'])+"</span>";
                     // results_div += "<span class='chevron my-chevron'></span>";
-                    results_div_app += "<span class='my-count'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
+                    results_div_app += "<span class='my-count' style='float:right'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
                     app_count++;
                 }
                 else {
@@ -178,7 +178,7 @@ function show_top_vendors_by_turnover(year) {
                     if(else_count >= 50) continue;
                     results_div += "<li data-theme='c'><a href='javascript:show_top_invoices_by_vendor_year("+results[i]['vendor_id']+", "+year+")' id='"+results[i]['vendor_id']+"'> <span class='list_text'>"+toTitleCase(results[i]['NAME'])+"</span>";
                     // results_div += "<span class='chevron my-chevron'></span>";
-                    results_div += "<span class='my-count'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
+                    results_div += "<span class='my-count' style='float:right'> $"+parseFloat(results[i]['INVOICE_AMOUNT_USD']).formatMoney(0, '.', ',')+"</a></span></li>";
                     else_count++;
                 }
             }
