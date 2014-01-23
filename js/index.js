@@ -51,13 +51,13 @@
 
         // console.log('Received Event: ' + id);
     }
-
-    // Handle the back button
-    //
-    function onBackKeyDown() {
-        step_back();
-    }
 };
+
+// Handle the back button
+//
+function onBackKeyDown() {
+    step_back();
+}
 
 
 function toTitleCase(str)
