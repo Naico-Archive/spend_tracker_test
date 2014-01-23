@@ -27,6 +27,7 @@
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener("backbutton", onBackKeyDown, false);
     },
     // deviceready Event Handler
     //
@@ -35,7 +36,6 @@
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         navigator.splashscreen.show();
-        document.addEventListener("backbutton", onBackKeyDown, false);
         // if (parseFloat(window.device.version) === 7.0) {
         //   document.body.style.marginTop = "20px";
         // }
@@ -56,6 +56,7 @@
 // Handle the back button
 //
 function onBackKeyDown() {
+    alert('hi');
     step_back();
 }
 
