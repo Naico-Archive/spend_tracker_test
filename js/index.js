@@ -35,6 +35,7 @@
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         navigator.splashscreen.show();
+        document.addEventListener("backbutton", onBackKeyDown, false);
         // if (parseFloat(window.device.version) === 7.0) {
         //   document.body.style.marginTop = "20px";
         // }
@@ -50,7 +51,14 @@
 
         // console.log('Received Event: ' + id);
     }
+
+    // Handle the back button
+    //
+    function onBackKeyDown() {
+        step_back();
+    }
 };
+
 
 function toTitleCase(str)
 { if(str)
