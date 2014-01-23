@@ -27,7 +27,6 @@
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener("backbutton", onBackKeyDown, false);
     },
     // deviceready Event Handler
     //
@@ -36,6 +35,7 @@
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         navigator.splashscreen.show();
+        document.addEventListener("backbutton", this.onBackKeyDown, false);
         // if (parseFloat(window.device.version) === 7.0) {
         //   document.body.style.marginTop = "20px";
         // }
@@ -465,17 +465,54 @@ function show_more_filter(year) {
 function show_years() {
     hide_all();
     current_step = show_years;
-    $.ajax({
-      url: "https://www.getvesseltracker.com/sdc_vendor_spend_dev/get_vessel_list_filter.php?pal_user_id="+ $.jStorage.get("pal_user_id"),      
-      datatype: 'json',
-      beforeSend: function() {
-        $(".spinner_index").css('display','block');
-        $(".spinner_index").center();
-    },
-    success: function(data){
-        owners_array = data["owner"];
-        vessel_array = data["vessel"];
-        $('.spinner_index').hide();
+    var currentTime = new Date();
+    if(Date.parse($.jStorage.get('filter_save_time'))+86400000 < Date.parse(currentTime) || $.jStorage.get('filter_save_time') == null) {
+        $.ajax({
+          url: "https://www.getvesseltracker.com/sdc_vendor_spend_dev/get_vessel_list_filter.php?pal_user_id="+ $.jStorage.get("pal_user_id"),      
+          datatype: 'json',
+          beforeSend: function() {
+            $(".spinner_index").css('display','block');
+            $(".spinner_index").center();
+        },
+        success: function(data){
+            // console.log(currentTime);
+            $.jStorage.set("filter_save_time", currentTime);
+            owners_array = data["owner"];
+            vessel_array = data["vessel"];
+            $.jStorage.set("filter_owners", owners_array);
+            $.jStorage.set("filter_vessels", vessel_array);
+            $('.spinner_index').hide();
+            var results_div = "<ul data-role='listview' data-divider-theme='b' data-inset='true' id='listview'>";
+            var cur_year = new Date().getFullYear();
+            for(var i=0; i<3; i++) {
+               // results_div += "<li><a href='javascript:show_top_vendors_by_turnover(\""+(2013 - i)+"\")' id='"+(2013 - i)+"'>"+(2013 - i);
+               results_div += "<li data-theme='c'><a data-transition='slide' href='javascript:show_more_filter(\""+(cur_year - i)+"\")' id='"+(cur_year - i)+"'>"+(cur_year - i);
+                // results_div += "<span class='chevron'></span>";
+                results_div += "</a></li>";
+            }
+            results_div += "</ul>";  
+
+            // console.log(results_div);
+            $('.spinner_index').hide();
+            // $('#vendor_classification').hide();
+            // $('#back_button').css('display','none');
+            // $('#view_title').show();
+            // $('#view_title').html('Please select a year.');
+            $('#index_content').html(results_div);
+            $('#index_content').show();
+            $('#listview').listview();
+
+            },
+        error: function() {        
+                alert('Please try again in a minute.');
+                $('.spinner_index').hide();
+            }
+        });
+    }
+    else{
+        owners_array = $.jStorage.get('filter_owners');
+        vessel_array = $.jStorage.get('filter_vessels');
+
         var results_div = "<ul data-role='listview' data-divider-theme='b' data-inset='true' id='listview'>";
         var cur_year = new Date().getFullYear();
         for(var i=0; i<3; i++) {
@@ -484,24 +521,11 @@ function show_years() {
             // results_div += "<span class='chevron'></span>";
             results_div += "</a></li>";
         }
-        results_div += "</ul>";  
-
-        // console.log(results_div);
-        $('.spinner_index').hide();
-        // $('#vendor_classification').hide();
-        // $('#back_button').css('display','none');
-        $('#index_content').show();
-        // $('#view_title').show();
-        // $('#view_title').html('Please select a year.');
+        results_div += "</ul>";
         $('#index_content').html(results_div);
+        $('#index_content').show();
         $('#listview').listview();
-
-    },
-    error: function() {        
-        alert('Please try again in a minute.');
-        $('.spinner_index').hide();
-    } 
-});
+    }
 }
 
 // show_years();
